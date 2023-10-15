@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import fetch from 'node-fetch';
 import * as fs from 'fs';
 import { deposition_show_details } from '../deposition/show/details';
-import * as mime from 'mime-types';
 import { helpers_get_access_token_from_environment } from '../helpers/get-access-token-from-environment';
 export const file_add = (sandbox, id, filename, verbose = false) => __awaiter(void 0, void 0, void 0, function* () {
     if (verbose) {
@@ -19,17 +18,10 @@ export const file_add = (sandbox, id, filename, verbose = false) => __awaiter(vo
     const access_token = helpers_get_access_token_from_environment(sandbox);
     const deposition = yield deposition_show_details(sandbox, id);
     const bucket = deposition.links.bucket;
-    let content_type = mime.contentType(filename) ? mime.contentType(filename) : 'text/plain';
-    if (content_type.includes('application/json')) {
-        // zenodo declines json uploads with a 400 - BAD REQUEST,  
-        // avoiding error by setting content type to plain text
-        content_type = 'text/plain';
-    }
     const stream = fs.createReadStream(filename);
     const method = 'PUT';
     const headers = {
         'Authorization': `Bearer ${access_token}`,
-        'Content-Type': content_type,
         'Content-Length': (fs.statSync(filename).size).toString()
     };
     const init = { method, headers, body: stream };
