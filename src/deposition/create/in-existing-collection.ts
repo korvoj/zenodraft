@@ -16,7 +16,7 @@ export const deposition_create_in_existing_collection = async (sandbox: boolean,
     await helpers_validate_in_collection_value(sandbox, collection_id, verbose)
     const latest_id = await get_id_for_latest_version_in_collection(sandbox, collection_id, verbose)
     const new_id = await create_new_versioned_deposition(sandbox, latest_id, verbose)
-    await remove_files_from_draft(sandbox, new_id, verbose)
+    // await remove_files_from_draft(sandbox, new_id, verbose)
     await metadata_update(sandbox, new_id, undefined, verbose)
     return new_id
 }
