@@ -61,8 +61,9 @@ const create_new_versioned_deposition = async (sandbox: boolean, latest_id: stri
 const get_id_for_latest_version_in_collection = async (sandbox: boolean, collection_id: string, verbose = false): Promise<string> => {
     if (verbose) {
         console.log(`getting id of the latest version in the collection...`)
+        console.log(`incrementing by 2...`)
     }
-    const id = (parseInt(collection_id) + 1).toString()
+    const id = (parseInt(collection_id) + 2).toString()
     const deposition = await deposition_show_details(sandbox, id)
     const latest_id = deposition.links.latest.split('/').slice(-3)[0]
     return latest_id
